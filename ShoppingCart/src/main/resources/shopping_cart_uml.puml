@@ -1,0 +1,38 @@
+@startuml
+Client -> ShoppingCartController: GET /api/v1/cart/items
+ShoppingCartController -> ShoppingCartService: getAllItems()
+ShoppingCartService -> ShoppingCartItemRepository: findAll()
+ShoppingCartItemRepository --> ShoppingCartService: List<ShoppingCartItem>
+ShoppingCartService --> ShoppingCartController: List<ShoppingCartItem>
+ShoppingCartController --> Client: List<ShoppingCartItem>
+
+Client -> ShoppingCartController: GET /api/v1/cart/items/{id}
+ShoppingCartController -> ShoppingCartService: getItemById(id)
+ShoppingCartService -> ShoppingCartItemRepository: findById(id)
+ShoppingCartItemRepository --> ShoppingCartService: Optional<ShoppingCartItem>
+ShoppingCartService --> ShoppingCartController: Optional<ShoppingCartItem>
+ShoppingCartController --> Client: ShoppingCartItem
+
+Client -> ShoppingCartController: POST /api/v1/cart/items
+ShoppingCartController -> ShoppingCartService: addItem(item)
+ShoppingCartService -> ShoppingCartItemRepository: save(item)
+ShoppingCartItemRepository --> ShoppingCartService: ShoppingCartItem
+ShoppingCartService --> ShoppingCartController: ShoppingCartItem
+ShoppingCartController --> Client: ShoppingCartItem
+
+Client -> ShoppingCartController: PUT /api/v1/cart/items/{id}
+ShoppingCartController -> ShoppingCartService: updateItem(id, itemDetails)
+ShoppingCartService -> ShoppingCartItemRepository: findById(id)
+ShoppingCartItemRepository --> ShoppingCartService: Optional<ShoppingCartItem>
+ShoppingCartService -> ShoppingCartItemRepository: save(item)
+ShoppingCartItemRepository --> ShoppingCartService: ShoppingCartItem
+ShoppingCartService --> ShoppingCartController: ShoppingCartItem
+ShoppingCartController --> Client: ShoppingCartItem
+
+Client -> ShoppingCartController: DELETE /api/v1/cart/items/{id}
+ShoppingCartController -> ShoppingCartService: deleteItem(id)
+ShoppingCartService -> ShoppingCartItemRepository: deleteById(id)
+ShoppingCartItemRepository --> ShoppingCartService: void
+ShoppingCartService --> ShoppingCartController: void
+ShoppingCartController --> Client: void
+@enduml
